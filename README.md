@@ -8,6 +8,10 @@
   <a href="https://github.com/cybernexus-ai/cyber-nexus-Ai"><img src="https://img.shields.io/github/stars/cybernexus-ai/cyber-nexus-Ai?style=for-the-badge&color=green" /></a>
   <a href="https://github.com/cybernexus-ai/cyber-nexus-Ai/fork"><img src="https://img.shields.io/github/forks/cybernexus-ai/cyber-nexus-Ai?style=for-the-badge&color=blue" /></a>
 </p>
+<p align="center">
+  <a href="https://whatsapp.com/channel/0029Vb8k0kx9mrGjwW3ePq1l"><img src="https://img.shields.io/badge/Join%20WhatsApp%20Channel-25D366?style=for-the-badge&logo=whatsapp&logoColor=white" /></a>
+  <a href="https://wa.me/254700000000"><img src="https://img.shields.io/badge/Contact%20Owner-000000?style=for-the-badge&logo=whatsapp" /></a>
+</p>
 
 > **WHATSAPP BOT AVAILABLE - TEXT FOR YOURS**
 > Owner: **CYBER NEXUS TECH | Nairobi**
