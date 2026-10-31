@@ -45,3 +45,17 @@
 | ⑪ | 𝐀𝐮𝐭𝐨 𝐁𝐥𝐮𝐞 𝐓𝐢𝐜𝐤𝐬 ✅ | ✅ |
 | ⑫ | 𝐀𝐮𝐭𝐨 𝐑𝐞𝐚𝐜𝐭 𝐓𝐞𝐱𝐭𝐬 💬 | ✅ |
 | 
+
+### ⚙️ How to ON/OFF Features
+Edit `index.js` > `SETTINGS` > set `true` / `false`
+
+### 👨‍💻 Developer
+
+**CYBER NEXUS TECH - Nairobi, Kenya**
+- Channel: https://whatsapp.com/channel/0029Vb8k0kx9mrGjwW3ePq1l
+- Group: https://chat.whatsapp.com/CoJiNMCP2N8BFVOgrWt8xj
+- GitHub: https://github.com/cybernexus-ai/cyber-nexus-Ai
+
+<div align="center">
+© 2026 CYBER NEXUS TECH | Made with ❤️ in Nairobi
+</div>
