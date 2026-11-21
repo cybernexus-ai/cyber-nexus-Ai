@@ -1,18 +1,17 @@
-// ===== PAIRING LINK WEBSITE =====
+// ===== PAIRING WEBSITE =====
 const express = require('express');
 const app = express();
-let currentPairCode = "Waiting... Bot starting, refresh in 10 seconds";
+let currentPairCode = "Waiting... Bot starting, refresh in 20 sec";
 
 app.get('/', (req, res) => {
   res.send(`
     <div style="font-family:Arial;text-align:center;padding:40px;background:#111;color:white;min-height:100vh">
       <h1>🤖 CYBER NEXUS MD</h1>
-      <h2 style="color:#00ff88">PAIRING CODE: ${currentPairCode}</h2>
-      <p>【entity-WhatsApp¦canonical_name=Whatsapp】 > Linked Devices > Link with phone number</p>
-      <p>Enter number: 254701083135</p>
+      <h2 style="color:#00ff88;font-size:32px">PAIRING CODE: ${currentPairCode}</h2>
+      <p>WhatsApp > Linked Devices > Link with phone number</p>
+      <p>Top: Kenya +254 | Box: 701083135</p>
       <p>Enter code above</p>
-      <button onclick="location.reload()" style="padding:10px 20px;font-size:18px">Refresh Code</button>
-      <p><a href="/pair" style="color:#00ff88">/pair link</a></p>
+      <button onclick="location.reload()" style="padding:12px 24px;font-size:18px">Refresh Code</button>
     </div>
   `);
 });
@@ -28,7 +27,11 @@ const { default: makeWASocket, useMultiFileAuthState, DisconnectReason } = requi
 const pino = require('pino');
 const config = require('./config');
 
+let pairingStarted = false;
+let isReconnecting = false;
+
 async function startBot() {
+  if (isReconnecting) return;
   const { state, saveCreds } = await useMultiFileAuthState(config.sessionName);
 
   const sock = makeWASocket({
@@ -40,9 +43,12 @@ async function startBot() {
 
   sock.ev.on('creds.update', saveCreds);
 
-  if (!sock.authState.creds.registered) {
+  // Pairing - only once, after 8 sec, and only if not registered
+  if (!sock.authState.creds.registered && !pairingStarted) {
+    pairingStarted = true;
     setTimeout(async () => {
       try {
+        if (sock.authState.creds.registered) return;
         const code = await sock.requestPairingCode(config.pairingNumber);
         currentPairCode = code;
         console.log("=================================");
@@ -50,8 +56,11 @@ async function startBot() {
         console.log("=================================");
       } catch (e) {
         console.log("Pairing error:", e.message);
+        pairingStarted = false;
+        // Try again in 15 sec, not instantly
+        setTimeout(() => { pairingStarted = false; }, 15000);
       }
-    }, 3000);
+    }, 8000);
   }
 
   sock.ev.on('connection.update', (update) => {
@@ -59,11 +68,20 @@ async function startBot() {
     if (connection === 'open') {
       console.log("CYBER NEXUS MD CONNECTED!");
       currentPairCode = "CONNECTED ✅";
+      pairingStarted = false;
+      isReconnecting = false;
     }
     if (connection === 'close') {
       const shouldReconnect = lastDisconnect?.error?.output?.statusCode !== DisconnectReason.loggedOut;
-      console.log("Connection closed, reconnecting:", shouldReconnect);
-      if (shouldReconnect) startBot();
+      console.log("Connection closed, waiting 10 sec before retry...");
+      if (shouldReconnect && !isReconnecting) {
+        isReconnecting = true;
+        pairingStarted = false;
+        setTimeout(() => {
+          isReconnecting = false;
+          startBot();
+        }, 10000);
+      }
     }
   });
 
@@ -78,10 +96,9 @@ async function startBot() {
     const cmd = args[0].toLowerCase();
     const reply = (t) => sock.sendMessage(from, { text: t }, { quoted: msg });
 
-    // ===== COMMANDS TO TEST =====
     if (cmd === "ping") return reply("🏓 *PONG!*\nCYBER NEXUS MD is online!\nSpeed: Fast 🔥");
     if (cmd === "alive") return reply("✅ *I'M ALIVE!*\n\nBot: CYBER NEXUS MD\nOwner: CYBER NEXUS\nPrefix: .");
-    if (cmd === "menu" || cmd === "help") return reply(`🤖 *CYBER NEXUS MD MENU*\n\n.ping - Check bot\n.alive - Is bot alive?\n.menu - This menu\n.owner - Owner info\n.time - Current time\n.say hello - Bot repeats\n\nMore coming soon...`);
+    if (cmd === "menu" || cmd === "help") return reply(`🤖 *CYBER NEXUS MD MENU*\n\n.ping - Check bot\n.alive - Is bot alive?\n.menu - This menu\n.owner - Owner info\n.time - Current time\n.say hello - Bot repeats`);
     if (cmd === "owner") return reply(`👑 *OWNER*\n\nName: CYBER NEXUS\nNumber: 254701083135\nBot: CYBER NEXUS MD`);
     if (cmd === "time") return reply(`🕐 *TIME*\n${new Date().toLocaleString()}`);
     if (cmd === "say") {
