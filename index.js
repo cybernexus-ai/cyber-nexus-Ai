@@ -7,7 +7,7 @@ app.get('/', (req, res) => {
 });
 app.listen(process.env.PORT || 3000, () => console.log("Pairing site running"));
 
-const { default: makeWASocket, useMultiFileAuthState, DisconnectReason } = require('@whiskeysockets/【entity-baileys¦canonical_name=baileys】');
+const { default: makeWASocket, useMultiFileAuthState, DisconnectReason } = require('@whiskeysockets/【entity-baileys¦canonical_name=Baileys】');
 const pino = require('pino');
 const config = require('./config');
 
